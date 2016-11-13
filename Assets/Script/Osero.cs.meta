@@ -1,12 +1,21 @@
 fileFormatVersion: 2
 guid: ac7200bf08039448e8df9f85db057d26
-timeCreated: 1478143207
+timeCreated: 1478573285
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - stone: {fileID: 1000012473093296, guid: ad4ebd4dc8df74ab4b55fc2b78a59c4e, type: 2}
+  - white_material: {instanceID: 0}
+  - blue_material: {instanceID: 0}
+  - red_material: {instanceID: 0}
+  - yellow_material: {instanceID: 0}
+  - red_hit: {instanceID: 0}
+  - blue_hit: {instanceID: 0}
+  - blue_sprays: {instanceID: 0}
+  - red_sprays: {instanceID: 0}
   - frame: {fileID: 1000010547185226, guid: e6f64937e968b4a6ab34a7bb34129ba0, type: 2}
+  - ai: {fileID: 114000013583015532, guid: b9e26f6d98d4d438aa3cc8de4d41e13b, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

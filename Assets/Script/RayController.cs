@@ -1,16 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RayController : MonoBehaviour {
+public class RayController : Photon.MonoBehaviour {
 
 	public GameObject pre_stone;
 	float time_count;
 	bool first_flag = true;
-	bool changed_turn = false;
 
 	public GameObject yellow_hit;
 	public GameObject black_hit;
-
+	public AudioClip shoot;
+	AudioSource audiosource;
+	
 	void reset_pre_stone(){
 		if (!first_flag) {
 			if (Osero.instance.get_stone_status (pre_stone.GetComponent<Position> ()).state == StoneStatus.Status.White) {
@@ -23,12 +24,13 @@ public class RayController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		time_count = 0;
+		audiosource = gameObject.GetComponent<AudioSource> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		Vector3 rayposition = transform.localPosition;
-		//rayposition.y += 0.5f;
+//		rayposition.y += 0.7f;
 		Ray ray = new Ray (rayposition, transform.forward);
 		RaycastHit hit;
 
@@ -45,7 +47,7 @@ public class RayController : MonoBehaviour {
 //			return;
 //		}
 
-		if (Physics.Raycast (ray, out hit) && !changed_turn) {
+		if (Physics.Raycast (ray, out hit) && !Osero.instance.changing_turn && Osero.instance.mycolor == Osero.instance.gamecolor) {
 			Debug.DrawLine (ray.origin, hit.point, Color.red);
 			GameObject stone = hit.collider.gameObject;
 			if (stone.tag == "Stone") {
@@ -61,9 +63,10 @@ public class RayController : MonoBehaviour {
 							stone.GetComponent<Renderer> ().material = Osero.instance.yellow_material;
 						}
 						if (time_count >= 1f) {
-							Osero.instance.set_stone (Osero.instance.get_stone_status (position));
-							StartCoroutine ("Wait");
+							Osero.instance.set_stone (Osero.instance.get_stone_status (position));						
+							GameObject.Find ("EmptyPosition(Clone)").GetComponent<Position> ().set_position (position.x, position.y, position.z);
 							time_count = 0;
+							audiosource.PlayOneShot (shoot);
 						}
 					} else {
 						if (time_count == 0) {
@@ -84,10 +87,9 @@ public class RayController : MonoBehaviour {
 			reset_pre_stone();
 		}
 	}
+		
 
-	IEnumerator Wait() {
-		changed_turn = true;
-		yield return new WaitForSeconds (6f);
-		changed_turn = false;
-	}
+
+
+
 }
